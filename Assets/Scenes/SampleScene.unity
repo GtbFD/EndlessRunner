@@ -384,7 +384,7 @@ GameObject:
   - component: {fileID: 1417107143}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -480,7 +480,9 @@ MonoBehaviour:
   - {fileID: 365883009055876188, guid: 9d0c7ce249eebd84d8b099be236ab1db, type: 3}
   - {fileID: 365883009055876188, guid: 0b37f375a820a6543a0f306eb1d3c497, type: 3}
   - {fileID: 365883009055876188, guid: d7e96cb9d0c93f14fb98b339e536e65a, type: 3}
+  currentPlatforms: []
   offset: 0
+  playerTransform: {fileID: 0}
   platformTest: {fileID: 365883009055876188, guid: 9d0c7ce249eebd84d8b099be236ab1db, type: 3}
 --- !u!4 &1680436885
 Transform:
