@@ -13,6 +13,7 @@ public class Player : MonoBehaviour
     public float horizontalSpeed;
     
     public LayerMask layerMask;
+    public LayerMask layerCoin;
 
     private bool isMovingLeft;
     private bool isMovingRight;
@@ -21,7 +22,7 @@ public class Player : MonoBehaviour
     public bool isDead;
 
     private GameController gameOver;
-    
+
     void Start()
     {
         _controller = GetComponent<CharacterController>();
@@ -32,6 +33,7 @@ public class Player : MonoBehaviour
     void Update()
     {
         OnCollision();
+        CollectCoin();
         
         var direction = Vector3.forward * _speed;
 
@@ -109,6 +111,22 @@ public class Player : MonoBehaviour
             isDead = true;
             Invoke("GameOver", 1f);
             
+        }
+    }
+
+    void CollectCoin()
+    {
+        RaycastHit coinHit;
+        
+        var originPoint = transform.position;
+        var diretionPoint = transform.TransformDirection(Vector3.forward + new Vector3(0, 10f, 0));
+        var distance = 10f;
+            
+        if (Physics.Raycast(originPoint, diretionPoint, out coinHit, distance, layerCoin)
+            && !isDead)
+        {
+            Destroy(coinHit.transform.gameObject);
+            gameOver.AddCoin(2);
         }
     }
 
