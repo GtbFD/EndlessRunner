@@ -11,18 +11,28 @@ public class Player : MonoBehaviour
     private float _jumpVelocity;
     public float _gravity;
     public float horizontalSpeed;
+    
+    public LayerMask layerMask;
 
     private bool isMovingLeft;
     private bool isMovingRight;
+
+    public Animator anim;
+    public bool isDead;
+
+    private GameController gameOver;
     
     void Start()
     {
         _controller = GetComponent<CharacterController>();
+        gameOver = FindObjectOfType<GameController>();
     }
 
 
     void Update()
     {
+        OnCollision();
+        
         var direction = Vector3.forward * _speed;
 
         if (_controller.isGrounded)
@@ -52,8 +62,10 @@ public class Player : MonoBehaviour
         }
 
         direction.y = _jumpVelocity;
-
-        _controller.Move(direction * Time.deltaTime);
+    
+        if (!isDead){
+            _controller.Move(direction * Time.deltaTime);
+        }
     }
 
     IEnumerator LeftMove()
@@ -76,5 +88,32 @@ public class Player : MonoBehaviour
         }
 
         isMovingRight = false;
+    }
+
+    void OnCollision()
+    {
+        RaycastHit hit;
+        
+        var originPoint = transform.position;
+        var diretionPoint = transform.TransformDirection(Vector3.forward);
+        var distance = 2f;
+            
+        if (Physics.Raycast(originPoint, diretionPoint, out hit, distance, layerMask)
+            && !isDead)
+        {
+            //Debug.Log("Bateu!");
+            anim.SetTrigger("die");
+            _speed = 0;
+            _jumpHeight = 0;
+            horizontalSpeed = 0;
+            isDead = true;
+            Invoke("GameOver", 1f);
+            
+        }
+    }
+
+    void GameOver()
+    {
+        gameOver.ShowGameOver();
     }
 }
